@@ -9,6 +9,16 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.get('/', (req, res) => {
+  res.json({
+    message: "Contacts API is running 🚀",
+    endpoints: [
+      "GET /contacts → all contacts",
+      "GET /contacts/:id → single contact"
+    ]
+  });
+});
+
 app.use("/contacts", contactsRoutes);
 
 const PORT = process.env.PORT || 3000;
