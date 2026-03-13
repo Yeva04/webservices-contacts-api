@@ -18,5 +18,5 @@ const initDb = async () => {
 const getDb = () => {
   return database;
 };
-
+console.log("Connected to DB:", process.env.DB_NAME);
 module.exports = { initDb, getDb };
