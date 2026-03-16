@@ -1,6 +1,40 @@
-### Get all contacts
-GET http://localhost:3000/contacts
+@host = http://localhost:3000
+@id = 69b723e310ef90f38969fae5
 
+### 1. GET all contacts
+GET {{host}}/contacts
 
-### Get single contact
-GET http://localhost:3000/contacts/69b35b5afaf5bf3855aded6f
+### 2. GET single contact (use existing ID)
+GET {{host}}/contacts/{{id}}
+
+### 3. POST - Create new contact (all fields required)
+POST {{host}}/contacts
+Content-Type: application/json
+
+{
+  "firstName": "Vera",
+  "lastName": "Johnson",
+  "email": "john@gmail.com",
+  "favoriteColor": "Purple",
+  "birthday": "2005-12-25"
+}
+
+### 4. PUT - Update a contact (use an EXISTING id - copy from GET or previous POST response)
+# @name updateContact
+PUT {{host}}/contacts/{{id}}
+Content-Type: application/json
+
+{
+  "firstName": "Mary",
+  "lastName": "Samson",
+  "email": "sammy@gmail.com",
+  "favoriteColor": "Green",
+  "birthday": "2000-01-02"
+}
+
+### 5. DELETE - Delete a contact (use EXISTING id)
+DELETE {{host}}/contacts/{{id}}
+
+### 6. Bonus: Check root & docs
+GET {{host}}/
+GET {{host}}/api-docs

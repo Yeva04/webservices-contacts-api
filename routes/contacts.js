@@ -3,7 +3,36 @@ const router = express.Router();
 const mongodb = require("../database/connection");
 const { ObjectId } = require("mongodb");
 
-// GET all contacts
+/**
+ * @swagger
+ * tags:
+ *   name: Contacts
+ *   description: Contacts management endpoints
+ */
+
+/**
+ * @swagger
+ * /contacts:
+ *   get:
+ *     summary: Retrieve all contacts
+ *     tags: [Contacts]
+ *     responses:
+ *       200:
+ *         description: A list of contacts
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id: { type: string }
+ *                   firstName: { type: string }
+ *                   lastName: { type: string }
+ *                   email: { type: string }
+ *                   favoriteColor: { type: string }
+ *                   birthday: { type: string }
+ */
 router.get("/", async (req, res) => {
   const db = mongodb.getDb();
   const result = await db.collection("contacts").find();
@@ -13,7 +42,26 @@ router.get("/", async (req, res) => {
   });
 });
 
-// GET single contact
+/**
+ * @swagger
+ * /contacts/{id}:
+ *   get:
+ *     summary: Retrieve a single contact by ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: MongoDB ObjectId of the contact
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: A single contact object
+ *       400:
+ *         description: Invalid ID supplied
+ *       404:
+ *         description: Contact not found
+ */
 router.get("/:id", async (req, res) => {
   const db = mongodb.getDb();
   const contactId = new ObjectId(req.params.id);
@@ -26,7 +74,33 @@ router.get("/:id", async (req, res) => {
   });
 });
 
-// POST create contact
+
+/**
+ * @swagger
+ * /contacts:
+ *   post:
+ *     summary: Create a new contact
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               firstName:
+ *                 type: string
+ *               lastName:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               favoriteColor:
+ *                 type: string
+ *               birthday:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Contact created
+ */
 router.post("/", async (req, res) => {
   const db = mongodb.getDb();
 
@@ -47,7 +121,43 @@ router.post("/", async (req, res) => {
   }
 });
 
-// PUT update contact
+/**
+ * @swagger
+ * /contacts/{id}:
+ *   put:
+ *     summary: Update an existing contact
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: MongoDB ObjectId of the contact to update
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               firstName:
+ *                 type: string
+ *               lastName:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               favoriteColor:
+ *                 type: string
+ *               birthday:
+ *                 type: string
+ *     responses:
+ *       204:
+ *         description: Contact successfully updated
+ *       400:
+ *         description: Invalid request
+ *       404:
+ *         description: Contact not found
+ */
 router.put("/:id", async (req, res) => {
   const db = mongodb.getDb();
   const contactId = new ObjectId(req.params.id);
@@ -72,7 +182,26 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// DELETE contact
+/**
+ * @swagger
+ * /contacts/{id}:
+ *   delete:
+ *     summary: Delete a contact
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: MongoDB ObjectId of the contact to delete
+ *         schema:
+ *           type: string
+ *     responses:
+ *       204:
+ *         description: Contact successfully deleted
+ *       400:
+ *         description: Invalid ID
+ *       404:
+ *         description: Contact not found
+ */
 router.delete("/:id", async (req, res) => {
   const db = mongodb.getDb();
   const contactId = new ObjectId(req.params.id);
